@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("maven-publish")
+
 }
 
 android {
@@ -29,6 +31,23 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    afterEvaluate {
+        publishing {
+            publications {
+                create<MavenPublication>("release") {
+                    from(components["release"])
+                    groupId = "com.github.mylibrary"
+                    artifactId = "test"
+                    version = "1.0"
+                }
+                repositories {
+                    mavenLocal()
+                }
+            }
+        }
+
     }
 }
 
